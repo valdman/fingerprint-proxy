@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"group": "none",
+			"problemMatcher": [],
+			"label": "yarn: start",
+			"detail": "cp package.json dist/package.json && cd dist && npm install --only=prod && nodemon --inspect=5858 -x \"clear; node index.js\""
+		}
+	]
+}
