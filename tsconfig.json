@@ -3,6 +3,8 @@
         "module": "commonjs",
         "outDir": "dist",
         "watch": true,
+        "jsx": "react",
+        "target": "es5",
         "preserveWatchOutput": true,
         "noImplicitAny": true,
         "removeComments": true,

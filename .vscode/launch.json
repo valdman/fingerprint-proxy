@@ -14,11 +14,8 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/index.js",
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js*"
-            ]
+            "program": "${workspaceFolder}/dist/server.js",
+            // "preLaunchTask": "build",
         },
         {
             "name": "Attach to Process",
