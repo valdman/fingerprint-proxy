@@ -1,13 +1,19 @@
 import React from 'react';
+import crypto from 'crypto';
 import { renderToString } from 'react-dom/server';
 
 import {App} from './webapp/App';
 
-export function renderWebapp() {
+type ServerRenderProps = {
+  nonce: string;
+};
+
+export function renderWebapp({nonce}: ServerRenderProps) {
   const appRendered = renderToString(<App text='test'/>);
   const page = htmlTemplate({
     body: appRendered,
     title: 'Fingerprint proxy',
+    nonce,
   });
   return page;
 }
@@ -15,9 +21,10 @@ export function renderWebapp() {
 type Props = {
   body: string;
   title: string;
+  nonce: string;
 };
 
-function htmlTemplate({ body, title }: Props){
+function htmlTemplate({ body, title, nonce }: Props){
   return `
       <!DOCTYPE html>
       <html>
@@ -28,7 +35,7 @@ function htmlTemplate({ body, title }: Props){
         <body>
           <div id="root">${body}</div>
         </body>
-        <script src='index.js'></script>
+        <script nonce='${nonce}' src='index.js'></script>
       </html>
     `;
 };
