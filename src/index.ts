@@ -1,4 +1,5 @@
 import util from "util";
+import path from "path";
 import express from "express";
 import cookieParser from "cookie-parser";
 import fingerprint from "express-fingerprint";
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(fingerprint());
 app.use(cookieParser());
+app.use(express.static("webapp"));
 
 app.get('*', function next(req, res) {
     console.log(util.inspect(req.fingerprint, {showHidden: false, depth: null}))

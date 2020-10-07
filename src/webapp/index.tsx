@@ -1,6 +1,6 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, hydrate } from 'react-dom';
 
 import {App} from './App';
 
-render(<App text='test'/>, document.getElementById('react-root'));
+hydrate(<App text='test'/>, document.getElementById('root'));

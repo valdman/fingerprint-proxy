@@ -1,22 +1,19 @@
-const {DefinePlugin} = require('webpack');
+const { DefinePlugin } = require("webpack");
 const path = require("path");
-const dotenv = require('dotenv').config({path: __dirname + '/.env'});
-const nodeExternals = require('webpack-node-externals');
+const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+const nodeExternals = require("webpack-node-externals");
 
 const env = {
   ...process.env,
-  ...dotenv.parsed
+  ...dotenv.parsed,
 };
 
-module.exports = {
-  entry: {
-    server: "./src/index.ts",
-    webapp: "./src/webapp/index.tsx",
-  },
-  plugins: [ new DefinePlugin({
+const commonSettings = {
+  plugins: [
+    new DefinePlugin({
       "process.env": JSON.stringify(env),
-  }) ],
-  externals: [ nodeExternals() ],
+    }),
+  ],
   watch: Boolean(env.WEBPACK_WATCH),
   devtool: "source-map",
   mode: env.ENVIROMENT,
@@ -32,8 +29,27 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
+};
+
+const serverConfig = {
+  ...commonSettings,
+  name: "server",
+  entry: "./src/index.ts",
+  externals: [nodeExternals()],
   output: {
-    filename: "[name].js",
+    filename: "server.js",
     path: path.resolve(__dirname, "dist"),
   },
 };
+
+const webappConfig = {
+  ...commonSettings,
+  name: "webapp",
+  entry: "./src/webapp/index.tsx",
+  output: {
+    filename: "index.js",
+    path: path.resolve(__dirname, "dist", "webapp"),
+  },
+};
+
+module.exports = [serverConfig, webappConfig];
