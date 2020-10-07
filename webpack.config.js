@@ -35,6 +35,7 @@ const serverConfig = {
   ...commonSettings,
   name: "server",
   entry: "./src/index.ts",
+  target: 'node',
   externals: [nodeExternals()],
   output: {
     filename: "server.js",

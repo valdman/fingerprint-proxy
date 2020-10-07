@@ -1,6 +1,11 @@
 import React from 'react';
-import { render, hydrate } from 'react-dom';
+import { hydrate } from 'react-dom';
 
-import {App} from './App';
+import {App, AppProps} from './App';
 
-hydrate(<App text='test'/>, document.getElementById('root'));
+const hydrateProps = (window as any).__APP_PROPS__ as AppProps;
+if(!hydrateProps) {
+    throw new Error('Hydration failed');
+}
+
+hydrate(<App {...hydrateProps}/>, document.getElementById('root'));
