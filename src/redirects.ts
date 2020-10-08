@@ -6,7 +6,8 @@ import { Platform } from "./entities/fingerprint";
 const URL_REWRITE: {
     [key: string]: string
 } = {
-    '/abc': 'https://google.com/'
+    '/google': 'https://google.com',
+    '/yandex': 'https://yandex.ru/search/?text=lokimo',
 };
 
 export enum RouteType {
@@ -21,13 +22,15 @@ type RedirectRouterProps = {
 };
 
 export function createRedirectRoute({url, query, platform}: RedirectRouterProps): string {
-    const rewriteTo = URL_REWRITE[url];
-    const queryString = qs.stringify(query);
-    if(rewriteTo) {
-        return `${rewriteTo}${queryString ? `?${queryString}` : ''}`;
-    }
-    const targetUrl = getTargetUrl({platform});
-    return `${targetUrl}${queryString ? `?${queryString}` : ''}`;
+    const rewriteTo = URL_REWRITE[url] || getTargetUrl({platform});
+    const [rewriteUrl, initQueryString] = rewriteTo.split('?');
+    const initQuery = qs.parse(initQueryString);
+    const queryString = qs.stringify({
+        ...query,
+        ...initQuery
+    });
+
+    return `${rewriteUrl}${queryString ? `?${queryString}` : ''}`;
 }
 
 function getTargetUrl({platform}: {platform: Platform}) {

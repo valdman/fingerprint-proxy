@@ -7,7 +7,7 @@ const CONNECTION_STRING = `mongodb://${MONGO_HOST}:${MONGO_PORT}`;
 const dbName = 'fingerprintComponents';
  
 export async function saveFingerprnt(fingerprint: Fingerprint) {
-    const collection = await connect(db => db.collection('documents'));
+    const collection = await connect(db => db.collection<Fingerprint>('documents'));
     return new Promise<InsertOneWriteOpResult<Fingerprint>>((resolve, reject) => {
         collection.insertOne(fingerprint, (err, result) => {
             if(err) {
