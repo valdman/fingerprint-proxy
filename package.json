@@ -5,9 +5,9 @@
   "license": "MIT",
   "scripts": {
     "start": "sh ./scripts/start.sh",
-    "build": "webpack",
+    "build": "webpack --watch=false",
     "build:production": "webpack --mode=production --devtool=none",
-    "build:watch": "WEBPACK_WATCH=true webpack"
+    "build:watch": "webpack --watch=true"
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^2.1.4",

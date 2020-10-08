@@ -1,8 +1,9 @@
 import {Db, InsertOneWriteOpResult, MongoClient} from 'mongodb';
 
 import { Fingerprint } from './entities/fingerprint';
-import { MONGO_CONNECTION_STRING } from './config';
- 
+import { MONGO_HOST, MONGO_PORT } from './config';
+
+const CONNECTION_STRING = `mongodb://${MONGO_HOST}:${MONGO_PORT}`;
 const dbName = 'fingerprintComponents';
  
 export async function saveFingerprnt(fingerprint: Fingerprint) {
@@ -27,7 +28,7 @@ function connect<T>(handler: DbConnectHandler<T>) {
         let aliveSession: MongoClient | null = null;
         try {
             // Use connect method to connect to the server
-            MongoClient.connect(MONGO_CONNECTION_STRING, {
+            MongoClient.connect(CONNECTION_STRING, {
                 useUnifiedTopology: true,
                 connectTimeoutMS: 2000,
             }, function(err, client) {

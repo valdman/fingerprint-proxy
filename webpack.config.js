@@ -16,7 +16,6 @@ const commonSettings = {
       "process.env": JSON.stringify(env),
     }),
   ],
-  watch: Boolean(env.WEBPACK_WATCH),
   devtool: "source-map",
   mode,
   module: {
