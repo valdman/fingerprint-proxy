@@ -1,9 +1,9 @@
 import {Db, InsertOneWriteOpResult, MongoClient} from 'mongodb';
 
 import { Fingerprint } from './entities/fingerprint';
-import { MONGO_HOST, MONGO_PORT } from './config';
+import { MONGO_HOST, MONGO_PORT, MONGO_LOGIN, MONGO_PASS } from './config';
 
-const CONNECTION_STRING = `mongodb://${MONGO_HOST}:${MONGO_PORT}`;
+const CONNECTION_STRING = `mongodb://${MONGO_LOGIN}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}`;
 const dbName = 'fingerprintComponents';
  
 export async function saveFingerprnt(fingerprint: Fingerprint) {
