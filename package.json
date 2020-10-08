@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "start": "sh ./scripts/start.sh",
-    "deploy": "sh ./scripts/deploy.sh",
     "build": "webpack",
     "build:production": "webpack --mode=production --devtool=none",
     "build:watch": "WEBPACK_WATCH=true webpack"

@@ -1,10 +1,7 @@
 import {Db, InsertOneWriteOpResult, MongoClient} from 'mongodb';
-import assert from 'assert';
 
 import { Fingerprint } from './entities/fingerprint';
-import { MONGO_TUNNEL_LOCAL_PORT } from './config';
- 
-const url = `mongodb://localhost:${MONGO_TUNNEL_LOCAL_PORT}`;
+import { MONGO_CONNECTION_STRING } from './config';
  
 const dbName = 'fingerprintComponents';
  
@@ -30,7 +27,7 @@ function connect<T>(handler: DbConnectHandler<T>) {
         let aliveSession: MongoClient | null = null;
         try {
             // Use connect method to connect to the server
-            MongoClient.connect(url, {
+            MongoClient.connect(MONGO_CONNECTION_STRING, {
                 useUnifiedTopology: true,
                 connectTimeoutMS: 2000,
                 serverSelectionTimeoutMS: 1000

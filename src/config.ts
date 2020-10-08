@@ -5,7 +5,7 @@ export const FINGERPRINT_COOKIE_NAME = '_s';
 export const REQUEST_ID_COOKIE_NAME = '_r';
 export const IS_DEVELOP_PAGE_HEADER_NAME = '_d';
 
-export const MONGO_TUNNEL_LOCAL_PORT = process.env.MONGO_TUNNEL_LOCAL_PORT || 4321;
+export const MONGO_CONNECTION_STRING = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`
 
 export const GOOGLE_PLAY_STORE_HOST = 'https://play.google.com/store/apps/details?id=ee.apico.quest&hl=en_US';
 export const APPSTORE_HOST = 'https://apps.apple.com/us/app/lokimo-self-guided-tours/id1470211624';
