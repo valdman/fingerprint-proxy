@@ -30,7 +30,6 @@ function connect<T>(handler: DbConnectHandler<T>) {
             MongoClient.connect(MONGO_CONNECTION_STRING, {
                 useUnifiedTopology: true,
                 connectTimeoutMS: 2000,
-                serverSelectionTimeoutMS: 1000
             }, function(err, client) {
                 if(err !== null) {
                     return reject(err);
