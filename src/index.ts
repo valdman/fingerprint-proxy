@@ -1,21 +1,28 @@
 import express from "express";
 import { nanoid } from "nanoid";
-import { ParsedQs } from "qs";
+import path from "path";
 import cookieParser from "cookie-parser";
 import fingerprint from "express-fingerprint";
 import { expressCspHeader, INLINE, NONCE, NONE, SELF } from 'express-csp-header';
-import util from "util";
 
 import {renderWebapp} from './htmlTemplate';
 import { createRedirectRoute } from "./redirects";
 import { PORT, FINGERPRINT_COOKIE_NAME, COOKIE_LIVETIME_IN_DAYS, REQUEST_ID_COOKIE_NAME, IS_DEVELOP_PAGE_HEADER_NAME } from "./config";
+import { pingDb, saveFingerprnt } from "./db";
+import { ClientFingerprintComponent, createFromRequest, ServerFingerprintComponent } from "./entities/fingerprint";
+
+pingDb().then(() =>
+    console.log('Connected to DB')
+).catch(err => {
+    console.log('Connect to DB failed', err);
+});
 
 const app = express();
 
 app.use(fingerprint());
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static("webapp"));
+app.use(express.static(path.resolve(__dirname, 'webapp')));
 
 app.use(expressCspHeader({
     directives: {
@@ -48,39 +55,31 @@ app.get('*', function next(req, res) {
     const [url] = req.originalUrl.split("?");
     const query = req.query;
 
-    const serverFingerprintComponents = req.fingerprint.components;
-    const platform = (serverFingerprintComponents as any)?.useragent?.os?.family
+    const serverFingerprintComponents = (req.fingerprint.components as unknown) as ServerFingerprintComponent;
+    const platform = serverFingerprintComponents?.useragent?.os?.family;
 
     const isDevelopPage = url === '/develop';
-
-    if(isDevelopPage) {
-        res.send(renderWebapp({
-            isDevelopPage: true,
-            nonce,
-            reqId,
-            initComponents: req.fingerprint.components,
-        }))
-        return;
-    }
+    const redirectTo = createRedirectRoute({query, url, platform});
 
     res.send(renderWebapp({
-        isDevelopPage: false,
+        isDevelopPage,
         nonce,
         reqId,
-        redirectTo: createRedirectRoute({query, url, platform}),
+        initComponents: req.fingerprint.components,
+        redirectTo,
     }));
 })
 
-app.post('/fingerprint', function next(req, res) {
-    const clientFingerprintComponents = req.body;
-    const serverFingerprintComponents = req.fingerprint.components;
-    const reqId = req.headers[REQUEST_ID_COOKIE_NAME];
+app.post('/fingerprint', async function next(req, res) {
+    const clientComponents = req.body as ClientFingerprintComponent;
+    const serverComponents = (req.fingerprint.components as unknown) as ServerFingerprintComponent;
+    const reqId = req.header(REQUEST_ID_COOKIE_NAME);
+    const hash = req.fingerprint.hash;
 
-    console.log(util.inspect({
-        reqId,
-        serverFingerprintComponents,
-        clientFingerprintComponents,
-    }, {showHidden: false, depth: null, colors: true, maxStringLength: 50}));
+    const fingerprint = createFromRequest({clientComponents, serverComponents, reqId, hash});
+
+    const saveResult = await saveFingerprnt(fingerprint);
+    console.log('Saved fingerprint: ', saveResult.insertedId);
 
     res.send('');
 });

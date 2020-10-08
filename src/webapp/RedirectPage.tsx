@@ -3,7 +3,6 @@ import { fetchSendFingerprint } from "./api/fetchSendFingerprint";
 import { getBrowserFingerprint } from "./fingerprint";
 
 export type RedirectPageProps = {
-    isDevelopPage: false;
     redirectTo: string;
     reqId: string;
 };

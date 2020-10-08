@@ -8,7 +8,6 @@ type FingerprntComponents = {
 };
 
 export type DevelopPageProps = {
-  isDevelopPage: true,
   reqId: string,
   initComponents?: FingerprntComponents,
 };

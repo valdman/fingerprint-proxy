@@ -8,6 +8,8 @@ const env = {
   ...dotenv.parsed,
 };
 
+const mode = env.ENVIROMENT;
+
 const commonSettings = {
   plugins: [
     new DefinePlugin({
@@ -16,7 +18,7 @@ const commonSettings = {
   ],
   watch: Boolean(env.WEBPACK_WATCH),
   devtool: "source-map",
-  mode: env.ENVIROMENT,
+  mode,
   module: {
     rules: [
       {
@@ -36,9 +38,12 @@ const serverConfig = {
   name: "server",
   entry: "./src/index.ts",
   target: 'node',
+  node: {
+      __dirname: false
+  },
   externals: [nodeExternals()],
   output: {
-    filename: "server.js",
+    filename: "index.js",
     path: path.resolve(__dirname, "dist"),
   },
 };

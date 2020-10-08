@@ -1,6 +1,8 @@
 import qs, { ParsedQs } from "qs";
 import { APPSTORE_HOST, GOOGLE_PLAY_STORE_HOST } from "./config";
 
+import { Platform } from "./entities/fingerprint";
+
 const URL_REWRITE: {
     [key: string]: string
 } = {
@@ -10,12 +12,6 @@ const URL_REWRITE: {
 export enum RouteType {
     Deeplink = 'DEEPLINK',
     Rewrite = 'REWRITE'
-};
-
-export enum Platform {
-    IOs = 'iOS',
-    Android = 'Android',
-    Desktop = 'DESKTOP'
 };
 
 type RedirectRouterProps = {
