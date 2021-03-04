@@ -1,17 +1,17 @@
-import React from 'react';
-import { renderToString } from 'react-dom/server';
+import React from "react";
+import { renderToString } from "react-dom/server";
 
-import {App, AppProps} from './webapp/App';
+import { App, AppProps } from "./webapp/App";
 
 type ServerRenderProps = {
   nonce: string;
 } & AppProps;
 
-export function renderWebapp({nonce, ...props}: ServerRenderProps) {
+export function renderWebapp({ nonce, ...props }: ServerRenderProps) {
   const appRendered = renderToString(<App {...props} />);
   const page = htmlTemplate({
     body: appRendered,
-    title: 'Fingerprint proxy',
+    title: "Fingerprint proxy",
     nonce,
     props,
   });
@@ -25,7 +25,7 @@ type TemplateProps = {
   props: AppProps;
 };
 
-function htmlTemplate({ body, title, nonce, props }: TemplateProps){
+function htmlTemplate({ body, title, nonce, props }: TemplateProps) {
   return `
       <!DOCTYPE html>
       <html>
@@ -42,4 +42,4 @@ function htmlTemplate({ body, title, nonce, props }: TemplateProps){
         <script nonce='${nonce}' src='index.js'></script>
       </html>
     `;
-};
+}
