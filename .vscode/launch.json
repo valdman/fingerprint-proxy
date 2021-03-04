@@ -7,7 +7,7 @@
         {
             "type": "node",
             "restart": true,
-            "port": 5858,
+            "port": 5864,
             "sourceMaps": true,
             "request": "launch",
             "name": "Launch Program",
@@ -22,7 +22,7 @@
             "type": "node",
             "request": "attach",
             "restart": true,
-            "port": 5858,
+            "port": 5864,
             "outFiles": ["${workspaceFolder}/dist/**/*.js"]
         },
     ]

@@ -10,7 +10,11 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": ".",
+        "paths": {
+            "*": ["src/declarations/*"]
+        },
     },
     "include": ["src/**/*", "tests/**/*"]
 }
